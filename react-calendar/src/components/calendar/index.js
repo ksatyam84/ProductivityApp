@@ -13,14 +13,17 @@ class NewComponent extends React.Component {
     team: '',
     section: '',
     };
+
+//    @Input() date: string;
+    console.log('props',this.state)
     this.handleSubmit = this.handleSubmit.bind(this);
     this.title = this.title.bind(this);
     this.course = this.course.bind(this);
     this.section = this.section.bind(this);
     this.team = this.team.bind(this);
     this.description = this.description.bind(this);
-  }
 
+}
     title(e){
        this.setState({title: e.target.value});
 //       console.log(this.state.title);
@@ -41,12 +44,22 @@ class NewComponent extends React.Component {
     handleSubmit(event)
     {
         event.preventDefault();
+        console.log(this.state);
+        const dict = {'title':this.state.title,
+        'description':this.state.description,
+        'course':this.state.course,
+        'section':this.state.section,
+         'team':this.state.team,
+         'd':this.props.d,
+         'm':this.props.m,
+         'y':this.props.y
+         };
         fetch("http://127.0.0.1:5000/add", {method:"POST",
         headers: {
          'Accept': 'application/json',
          'Content-Type': 'application/json',
          },
-         body:JSON.stringify(this.state)})
+         body:JSON.stringify(dict)})
         .then(res=>res.json())
         .then(res => {
         console.log(res);
@@ -56,7 +69,7 @@ class NewComponent extends React.Component {
       render() {
         return (
           <div className="jumbotron p-5">
-            <h2> Add event </h2>
+          <h2> Add event </h2>
             <form onSubmit={this.handleSubmit}>
               <div class="form-group">
                 <input name='title' onChange={this.title} type="text" className="form-control" placeholder="Title" />
@@ -169,7 +182,7 @@ export default class Calendar extends React.Component {
   };
   month = () => {
     if(this.state.data){
-    console.log("month",this.state.data);
+//    console.log("month",this.state.data);
   }
     var m = this.state.dateObject.format("MMMM");
     return m;
@@ -263,7 +276,7 @@ export default class Calendar extends React.Component {
     });
   };
   setYear = year => {
-    console.log("setYear", year);
+//    console.log("setYear", year);
     let dateObject = Object.assign({}, this.state.dateObject);
     dateObject = moment(dateObject).set("year", year);
     this.setState({
@@ -273,7 +286,7 @@ export default class Calendar extends React.Component {
     });
   };
   onYearChange = e => {
-    console.log("onYearChange ",e.target.value);
+//    console.log("onYearChange ",e.target.value);
     this.setYear(e.target.value);
   };
   getDates(startDate, stopDate) {
@@ -348,9 +361,9 @@ export default class Calendar extends React.Component {
         var day = this.state.selectedDay;
         var mon = this.state.dateObject.format("MMMM");
         var yea = this.state.dateObject.format("Y");
-        console.log(day,mon,yea);
+//        console.log(day,mon,yea);
 
-        fetch("http://127.0.0.1:5000/show/"+day+'/'+mon+'/'+yea).then(res => res.json().then(data1 => {this.setState({data: data1['output']}); console.log('log',this.state.data);}));
+        fetch("http://127.0.0.1:5000/show/"+day+'/'+mon+'/'+yea).then(res => res.json().then(data1 => {this.setState({data: data1['output']});}));
 
       }
     );
@@ -452,13 +465,17 @@ export default class Calendar extends React.Component {
       </div>
       </div>
 
-      <div className = 'col-sm container p-5 '>
-      {this.state.clicked ? (<h1 className='text-center'>{this.state.selectedDay} {this.state.selectedMonth} {this.state.selectedYear}</h1>) : null}
-      {this.state.data? <EventList className='p-0 m-1' data={this.state.data}/>:null}
-      </div>
-      <div className = 'col-sm p-5'>
-      {this.state.clicked ?<NewComponent />: null}
-    </div>
+
+
+         <div className = 'col-sm container p-5 '>
+          {this.state.clicked ? ( <h1 className='text-center'>{this.state.selectedDay} {this.state.selectedMonth} {this.state.selectedYear}</h1>) : null}
+         {this.state.data? <EventList className='p-0 m-1' data={this.state.data}/>:null}
+         </div>
+
+         <div className = 'col-sm container p-5 '>
+          {this.state.clicked ? (<NewComponent d={this.state.selectedDay} m={this.state.selectedMonth} y={this.state.selectedYear}/>):null}
+         </div>
+
     </div>
     );
   }

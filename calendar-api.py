@@ -24,39 +24,24 @@ def show(date, month, year):
         # output.append({'day': i['day'], 'D': i['D'], 'M': i['M'], "Y": i['Y'], "type": i['event.type'],
         #                "course": i['event.course'], "section": i['event.section'], "team": i['event.team'],
         #                "description": i['event.description']})
-        output.append({'day': i['day'], 'D': i['D'], 'M': i['M'], "Y": i['Y'], "event": i['event']})
+        output.append({'D': i['D'], 'M': i['M'], "Y": i['Y'], "event": i['event']})
         print(i)
     print(output)
     return jsonify({"output": output})
 
-@app.route('/add', methods=['GET','POST'])
+
+@app.route('/add', methods=['GET', 'POST'])
 def add():
     calendar = mongo.db.calendar
     req = request.json
-    print('in post ',req)
-    # calendar.insert({'D':req['']})
-    return jsonify({"output":req})
-
-@app.route('/<day>/<month>/<year>', methods=['GET'])
-def start(day, month, year):
-    calendar = mongo.db.calendar
-    try:
-        print(day, month, year)
-        calendar = mongo.db.calendar
-        docs_list = list(calendar.find())
-        output = []
-        for i in docs_list:
-            # output.append({'day': i['day'], 'D': i['D'], 'M': i['M'], "Y": i['Y'], "type": i['event.type'],
-            #                "course": i['event.course'], "section": i['event.section'], "team": i['event.team']})
-            print(i)
-        print(output)
-        # TODO: comment this line out
-        output = [{"day": day, "month": month, "year": year}]
-        print(output)
-        return jsonify({"output": output})
-    except:
-        print("error")
-    return render_template('test.html')
+    # print('in post ',req)
+    event_dict = {'type': req['title'], 'course': req['course'],
+                  'section': req['section'], 'team': req['team'],
+                  'description': req['description']}
+    uid = calendar.insert({'D': int(req['d']), 'M': req['m'], 'Y': int(req['y']),'event':event_dict })
+    print(uid)
+    # op = list(calendar.find({"_id":uid}))
+    return jsonify({"output": 'insert done'})
 
 
 if __name__ == "__main__":
