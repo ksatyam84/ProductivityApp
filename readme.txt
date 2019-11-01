@@ -4,7 +4,8 @@ $ mongo
 
 save SE folder
 
-$ cd SE $ python calendar-api.py
+$ cd SE
+$ python calendar-api.py
 
 
 $ cd SE/react-calendar
