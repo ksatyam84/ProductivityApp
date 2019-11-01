@@ -1,6 +1,7 @@
 $ mongo
-> use calendar
-> db.createCollection(“calendar”)
+
+>> use calendar
+>> db.createCollection(“calendar”)
 
 save SE folder
 
