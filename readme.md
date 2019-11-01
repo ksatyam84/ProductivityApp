@@ -1,16 +1,18 @@
+# Create database
 $ mongo
 
 -> use calendar
 
 -> db.createCollection(“calendar”)
 
-save SE folder
+# Starting frontend react app
+save productivityApp as SE folder
 
 $ cd SE
 
 $ python calendar-api.py
 
-
+# Starting backend flask app
 $ cd SE/react-calendar
 
 (download react strap/bootstrap)
@@ -19,11 +21,8 @@ $ npm i
 
 $ npm start
 
-
-<<in browser>>
-press on anything else it will show empty event
-  
-make and event
-
-press on the date again to show the event
+# How to use
+- press on any date it will show empty event
+- make an event
+- press on the date again to show the event
 
